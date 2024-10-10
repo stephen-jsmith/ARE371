@@ -190,7 +190,7 @@ def solve_hw(h_in, T_ia_in, T_wi_in, h_w_in):
     Returns:
     list: A list of solutions for the equation.
     """
-    h, T_ia, T_wi h_w = sym('h T_ia T_wi')
+    h, T_ia, T_wi, h_w = sym('h T_ia T_wi')
     f = Eq((1.8/h)*abs(T_ia-T_wi)**0.29 - h_w, 0)
     if h_in != None:
         f.subs(h, h_in)
@@ -202,7 +202,7 @@ def solve_hw(h_in, T_ia_in, T_wi_in, h_w_in):
         f.subs(h_w, h_w_in)
     return solve(f)
 
-def solve_h_s(h_in, T_ia_in, T_si_in, h_s_in)
+def solve_h_s(h_in, T_ia_in, T_si_in, h_s_in):
     """
     Solves the equation for the heat transfer between a surface and indoor air.
     
