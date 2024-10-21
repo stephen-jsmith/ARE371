@@ -23,8 +23,11 @@ def solve_q_sol_swall_in(q_sol_w_in, tau_in, A_s_in, A_w_in, A_i_in, q_sol_in):
     """
     q_sol_w, tau, A_s, A_w, A_i, q_sol = sym('q_sol_w tau A_s A_w A_i q_sol')
     f = Eq(q_sol_w * tau * (A_s/(A_s + A_w + A_i)) - q_sol, 0)
+    solved_var = None
     if q_sol_w_in != None:
         f.subs(q_sol_w, q_sol_w_in)
+    else:
+        solved_var = q_sol_w
     if tau_in != None:
         f.subs(tau, tau_in)
     if A_s_in != None:

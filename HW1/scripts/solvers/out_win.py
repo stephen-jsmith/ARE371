@@ -23,19 +23,15 @@ def solve_q_sol_out_win(alpha_glass_in, A_w_in, q_dir_in, q_diff_in, q_refl_in, 
 
     alpha_glass, A_w, q_dir, q_diff, q_refl, q_sol = sym('alpha_glass A_w q_dir q_diff q_refl q_sol')
     f = Eq(0.5*alpha_glass*A_w(q_dir + q_diff + q_refl) - q_sol, 0)
-    if alpha_glass_in != None:
-        f.subs(alpha_glass, alpha_glass_in)
-    if A_w_in != None:
-        f.subs(A_w, A_w_in)
-    if q_dir_in != None:
-        f.subs(q_dir, q_dir_in)
-    if q_diff_in != None:
-        f.subs(q_diff, q_diff_in)
-    if q_refl_in != None:
-        f.subs(q_refl, q_refl_in)
-    return solve(f)
+    var_solved = None
+    for var, val in zip([alpha_glass, A_w, q_dir, q_diff, q_refl], [alpha_glass_in, A_w_in, q_dir_in, q_diff_in, q_refl_in]):
+        if val is not None:
+            f = f.subs(var, val)
+        else:
+            var_solved = var
+    return (var_solved, solve(f))
 
-def solve_q_conv_oa_wo(A_w_in, h_wo_in, T_oa_in, T_wo_in, q_conv_oa_wo_in):
+def solve_q_conv_oa_wo(A_w_in=None, h_wo_in=None, T_oa_in=None, T_wo_in=None, q_conv_oa_wo_in=None):
     """
     Solves the equation for the convective heat transfer between the outdoor air and the window.
 
@@ -56,19 +52,15 @@ def solve_q_conv_oa_wo(A_w_in, h_wo_in, T_oa_in, T_wo_in, q_conv_oa_wo_in):
 
     A_w, h_wo, T_oa, T_wo, q_conv_oa_wo = sym('A_w h_wo T_oa T_wo q_conv_oa_wo')
     f = Eq(h_wo*A_w*(T_oa - T_wo) - q_conv_oa_wo, 0)
-    if A_w_in != None:
-        f.subs(A_w, A_w_in)
-    if h_wo_in != None:
-        f.subs(h_wo, h_wo_in)
-    if T_oa_in != None:
-        f.subs(T_oa, T_oa_in)
-    if T_wo_in != None:
-        f.subs(T_wo, T_wo_in)
-    if q_conv_oa_wo_in != None:
-        f.subs(q_conv_oa_wo, q_conv_oa_wo_in)
-    return solve(f)
+    var_solved = None
+    for var, val in zip([A_w, h_wo, T_oa, T_wo, q_conv_oa_wo], [A_w_in, h_wo_in, T_oa_in, T_wo_in, q_conv_oa_wo_in]):
+        if val is not None:
+            f = f.subs(var, val)
+        else:
+            var_solved = var
+    return [solve(f), var_solved]
 
-def solve_q_lwr_gr_wo(A_w_in, F_wo_gr_in, E_wo_in, E_gr_in, sigma_in, T_gr_in, T_wo_in, q_lwr_gr_wo_in):
+def solve_q_lwr_gr_wo(A_w_in=None, F_wo_gr_in=None, E_wo_in=None, E_gr_in=None, sigma_in=None, T_gr_in=None, T_wo_in=None, q_lwr_gr_wo_in=None):
     """
     Solves the equation for the longwave radiation between the ground and the window.
 
@@ -92,23 +84,14 @@ def solve_q_lwr_gr_wo(A_w_in, F_wo_gr_in, E_wo_in, E_gr_in, sigma_in, T_gr_in, T
 
     A_w, F_wo_gr, E_wo, E_gr, sigma, T_gr, T_wo, q_lwr_gr_wo = sym('A_w F_wo_gr E_wo E_gr sigma T_gr T_wo q_lwr_gr_wo')
     f = Eq(A_w*F_wo_gr*E_wo*E_gr*sigma*(T_gr**4 - T_wo**4) - q_lwr_gr_wo, 0)
-    if A_w_in != None:
-        f.subs(A_w, A_w_in)
-    if F_wo_gr_in != None:
-        f.subs(F_wo_gr, F_wo_gr_in)
-    if E_wo_in != None:
-        f.subs(E_wo, E_wo_in)
-    if E_gr_in != None:
-        f.subs(E_gr, E_gr_in)
-    if sigma_in != None:
-        f.subs(sigma, sigma_in)
-    if T_gr_in != None:
-        f.subs(T_gr, T_gr_in)
-    if T_wo_in != None:
-        f.subs(T_wo, T_wo_in)
-    if q_lwr_gr_wo_in != None:
-        f.subs(q_lwr_gr_wo, q_lwr_gr_wo_in)
-    return solve(f)
+    var_solved = None
+    for var, val in zip([A_w, F_wo_gr, E_wo, E_gr, sigma, T_gr, T_wo, q_lwr_gr_wo], 
+                        [A_w_in, F_wo_gr_in, E_wo_in, E_gr_in, sigma_in, T_gr_in, T_wo_in, q_lwr_gr_wo_in]):
+        if val is not None:
+            f = f.subs(var, val)
+        else:
+            var_solved = var
+    return (var_solved,solve(f))
 
 def solve_q_lwr_sky_wo(A_w_in, F_wo_sky_in, E_wo_in, E_sky_in, sigma_in, T_sky_in, T_wo_in, q_lwr_sky_wo_in):
     """
@@ -134,23 +117,14 @@ def solve_q_lwr_sky_wo(A_w_in, F_wo_sky_in, E_wo_in, E_sky_in, sigma_in, T_sky_i
 
     A_w, F_wo_sky, E_wo, E_sky, sigma, T_sky, T_wo, q_lwr_sky_wo = sym('A_w F_wo_sky E_wo E_sky sigma T_sky T_wo q_lwr_sky_wo')
     f = Eq(A_w*F_wo_sky*E_wo*E_sky*sigma*(T_sky**4 - T_wo**4) - q_lwr_sky_wo, 0)
-    if A_w_in != None:
-        f.subs(A_w, A_w_in)
-    if F_wo_sky_in != None:
-        f.subs(F_wo_sky, F_wo_sky_in)
-    if E_wo_in != None:
-        f.subs(E_wo, E_wo_in)
-    if E_sky_in != None:
-        f.subs(E_sky, E_sky_in)
-    if sigma_in != None:
-        f.subs(sigma, sigma_in)
-    if T_sky_in != None:
-        f.subs(T_sky, T_sky_in)
-    if T_wo_in != None:
-        f.subs(T_wo, T_wo_in)
-    if q_lwr_sky_wo_in != None:
-        f.subs(q_lwr_sky_wo, q_lwr_sky_wo_in)
-    return solve(f)
+    solved_var = None
+    for var, val in zip([A_w, F_wo_sky, E_wo, E_sky, sigma, T_sky, T_wo, q_lwr_sky_wo], 
+                        [A_w_in, F_wo_sky_in, E_wo_in, E_sky_in, sigma_in, T_sky_in, T_wo_in, q_lwr_sky_wo_in]):
+        if val is not None:
+            f = f.subs(var, val)
+        else:
+            solved_var = var
+    return [solved_var, solve(f)]
 
 def solve_q_cond_wi_wo(A_w_in, k_in, L_in, T_wi_in, T_wo_in, q_cond_wi_wo):
     """
@@ -174,19 +148,13 @@ def solve_q_cond_wi_wo(A_w_in, k_in, L_in, T_wi_in, T_wo_in, q_cond_wi_wo):
 
     A_w, k, L, T_wi, T_wo, q_cond_wi_wo = sym('A_w k L T_wi T_wo q_cond_wi_wo')
     f = Eq(A_w*k/L*(T_wi - T_wo) - q_cond_wi_wo, 0)
-    if A_w_in != None:
-        f.subs(A_w, A_w_in)
-    if k_in != None:
-        f.subs(k, k_in)
-    if L_in != None:
-        f.subs(L, L_in)
-    if T_wi_in != None:
-        f.subs(T_wi, T_wi_in)
-    if T_wo_in != None:
-        f.subs(T_wo, T_wo_in)
-    if q_cond_wi_wo != None:
-        f.subs(q_cond_wi_wo, q_cond_wi_wo)
-    return solve(f)
+    solved_var = None
+    for var, val in zip([A_w, k, L, T_wi, T_wo, q_cond_wi_wo], [A_w_in, k_in, L_in, T_wi_in, T_wo_in, q_cond_wi_wo]):
+        if val is not None:
+            f = f.subs(var, val)
+        else:
+            solved_var = var
+    return [solved_var, solve(f)]
 
 def solve_ovr_out_win(q_sol_in, q_conv_oa_wo_in, q_lwr_sky_wo_in, q_cond_wi_wo):
     """
@@ -208,12 +176,12 @@ def solve_ovr_out_win(q_sol_in, q_conv_oa_wo_in, q_lwr_sky_wo_in, q_cond_wi_wo):
 
     q_sol, q_conv_oa_wo, q_lwr_sky_wo, q_cond_wi_wo = sym('q_sol q_conv_oa_wo q_lwr_sky_wo q_cond_wi_wo')
     f = Eq(q_sol + q_conv_oa_wo + q_lwr_sky_wo + q_cond_wi_wo, 0)
+    solved_var = None
     if q_sol_in != None:
-        f.subs(q_sol, q_sol_in)
-    if q_conv_oa_wo_in != None:
-        f.subs(q_conv_oa_wo, q_conv_oa_wo_in)
-    if q_lwr_sky_wo_in != None:
-        f.subs(q_lwr_sky_wo, q_lwr_sky_wo_in)
-    if q_cond_wi_wo != None:
-        f.subs(q_cond_wi_wo, q_cond_wi_wo)
+        for var, val in zip([q_sol, q_conv_oa_wo, q_lwr_sky_wo, q_cond_wi_wo], [q_sol_in, q_conv_oa_wo_in, q_lwr_sky_wo_in, q_cond_wi_wo]):
+            if val is not None:
+                f = f.subs(var, val)
+            else:
+                solved_var = var
+        return [solved_var, solve(f)]
     return solve(f)

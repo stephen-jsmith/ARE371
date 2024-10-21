@@ -1,0 +1,78 @@
+{
+    "E": {
+    "layers": [
+        {
+        "material": "concrete",
+        "thickness_cm": 10,
+        "properties": {
+            "conductivity_k_W/mK": 1.2,
+            "density_kg/m3": 2500,
+            "specific_capacity_J/kgK": 900
+        }
+        },
+        {
+        "material": "insulation",
+        "thickness_cm": 10,
+        "properties": {
+            "conductivity_k_W/mK": 0.03,
+            "density_kg/m3": 50,
+            "specific_capacity_J/kgK": 800
+        }
+        },
+        {
+        "material": "gypsum board",
+        "thickness_cm": 1.2,
+        "properties": {
+            "conductivity_k_W/mK": 0.3,
+            "density_kg/m3": 700,
+            "specific_capacity_J/kgK": 1000
+        }
+        }
+    ],
+    "surface_properties": {
+        "long_wave_emissivity_ɛ": 0.93,
+        "long_wave_absorptivity_α": 0.93,
+        "internal_surface": {
+        "color": "white",
+        "short_wave_absorptivity_α": 0.4
+        },
+        "external_surface": {
+        "color": "dark red",
+        "solar_radiation_absorptivity_α": 0.8
+        }
+    }
+    },
+    "W": {
+    "material": "double-glazed reflective glass",
+    "glass_layer_thickness_cm": 0.5,
+    "properties": {
+        "conductivity_k_W/mK": 1.5,
+        "density_kg/m3": 2500,
+        "specific_capacity_J/kgK": 1000
+    },
+    "solar_radiation_properties": {
+        "absorptivity_short_wave_α": 0.06,
+        "reflectivity_short_wave": {
+        "exterior_panel": 0.7,
+        "interior_panel": 0.1
+        }
+    },
+    "long_wave_properties": {
+        "emissivity": 0.85,
+        "absorptivity": 0.85
+    }
+    },
+    "I": {
+    "material": "light-weight-concrete",
+    "thickness_cm": 10,
+    "properties": {
+        "conductivity_k_W/mK": 0.7,
+        "density_kg/m3": 800,
+        "specific_capacity_J/kgK": 1000
+    },
+    "surface_properties": {
+        "long_wave_emissivity_ɛ": 0.93
+    },
+    "boundary_conditions": "adiabatic"
+    }
+}
